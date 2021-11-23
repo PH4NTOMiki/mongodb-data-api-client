@@ -44,6 +44,12 @@ class Collection {
     }
     async internalFetch(action, obj) {
         obj = obj || {};
+        if(obj.filter)obj.filter = this.fixId(obj.filter);
+        if(obj.document)obj.document = this.fixId(obj.document);
+        if(obj.documents)obj.documents = this.fixId(obj.documents);
+        if(obj.update)obj.update = this.fixId(obj.update);
+        if(obj.replacement)obj.replacement = this.fixId(obj.replacement);
+        if(obj.pipeline)obj.pipeline = this.fixId(obj.pipeline);
         const resp = await this._fetch(this.url + action, {
             method: 'POST',
             headers: {
@@ -65,6 +71,11 @@ class Collection {
             throw json;
         }
 
+    }
+    fixId(obj) {
+        if(typeof(obj._id)==='string' && (/^[a-f\d]{24}$/i).test(obj._id))obj._id = {$oid: obj._id};
+        if(Array.isArray(obj))obj = obj.map(e=>{if(typeof(e._id)==='string' && (/^[a-f\d]{24}$/i).test(e._id))e._id = {$oid: e._id};return e;});
+        return obj;
     }
     async findMany(query, options) {
         query = query || {};
@@ -101,6 +112,7 @@ class Collection {
         });
     }
     updateOne(query, update, options) {
+        query = query || {};
         options = options || {};
         return this.internalFetch('updateOne', {
             filter: query,
@@ -109,6 +121,7 @@ class Collection {
         });
     }
     updateMany(query, update, options) {
+        query = query || {};
         options = options || {};
         return this.internalFetch('updateMany', {
             filter: query,
