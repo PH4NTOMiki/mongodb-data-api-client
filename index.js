@@ -9,7 +9,7 @@ class MongoDataAPIClient {
         this.url = `https://data.mongodb-api.com/app/${appId}/endpoint/data/beta/action/`;
         this.apiKey = apiKey;
         this.clusterName = clusterName || 'Cluster0';
-        this._fetch = typeof(fetch) === 'function' ? (function fetch(){return fetch(...arguments);}) : require('node-fetch');
+        this._fetch = typeof(fetch) === 'function' ? (function fetch(){return fetch(...arguments);}) : require('node-fetch-polyfill');
     }
     db(dbName) {
         return new Database(dbName, this.url, this.apiKey, this.clusterName, this._fetch);
@@ -67,6 +67,7 @@ class Collection {
 
     }
     findMany(query, options) {
+        query = query || {};
         options = options || {};
         return this.internalFetch('find', {
             filter: query,
@@ -80,6 +81,7 @@ class Collection {
         return this.findMany(query, options);
     }
     findOne(query, options) {
+        query = query || {};
         options = options || {};
         return this.internalFetch('findOne', {
             filter: query,
@@ -116,11 +118,13 @@ class Collection {
         return this.updateMany(query, update, options);
     }
     deleteOne(query) {
+        query = query || {};
         return this.internalFetch('deleteOne', {
             filter: query
         });
     }
     deleteMany(query) {
+        query = query || {};
         return this.internalFetch('deleteMany', {
             filter: query
         });
@@ -129,6 +133,7 @@ class Collection {
         return this.deleteMany(query);
     }
     replaceOne(query, doc, options) {
+        query = query || {};
         return this.internalFetch('replaceOne', {
             filter: query,
             replacement: doc,
