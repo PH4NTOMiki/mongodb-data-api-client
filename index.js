@@ -66,27 +66,29 @@ class Collection {
         }
 
     }
-    findMany(query, options) {
+    async findMany(query, options) {
         query = query || {};
         options = options || {};
-        return this.internalFetch('find', {
+        const a = await this.internalFetch('find', {
             filter: query,
             projection: options.projection,
             sort: options.sort,
             limit: options.limit,
             skip: options.skip
         });
+        return a.documents;
     }
     find(query, options) {
         return this.findMany(query, options);
     }
-    findOne(query, options) {
+    async findOne(query, options) {
         query = query || {};
         options = options || {};
-        return this.internalFetch('findOne', {
+        const a = await this.internalFetch('findOne', {
             filter: query,
             projection: options.projection
         });
+        return a.document;
     }
     insertOne(doc) {
         return this.internalFetch('insertOne', {
