@@ -1,3 +1,5 @@
+const __fetch = require('cross-fetch');
+
 class MongoDataAPIClient {
     /**
      * 
@@ -5,11 +7,12 @@ class MongoDataAPIClient {
      * @param {string} apiKey 
      * @param {string?} clusterName 
      */
-    constructor(appId, apiKey, clusterName) {
+    constructor(appId, apiKey, clusterName, options) {
+        options = options || {};
         this.url = `https://data.mongodb-api.com/app/${appId}/endpoint/data/beta/action/`;
         this.apiKey = apiKey;
         this.clusterName = clusterName || 'Cluster0';
-        this._fetch = typeof(fetch) === 'function' ? (function fetch(){return fetch(...arguments);}) : require('node-fetch-polyfill');
+        this._fetch = options.fetch || __fetch;
     }
     db(dbName) {
         return new Database(dbName, this.url, this.apiKey, this.clusterName, this._fetch);
@@ -161,4 +164,8 @@ class Collection {
         });
     }
 }
-exports = module.exports = MongoDataAPIClient;
+
+function createMongoClient(appId, apiKey, clusterName, options) {
+    return new MongoDataAPIClient(appId, apiKey, clusterName, options);
+}
+exports = module.exports = createMongoClient;

@@ -1,6 +1,6 @@
 {
   "name": "@ph4ntomiki/mongodb-data-api-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "MongoDB Data API Client",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,6 @@
   "author": "PH4NTOMiki",
   "license": "ISC",
   "dependencies": {
-    "node-fetch-polyfill": "^2.0.6"
+    "cross-fetch": "^3.1.4"
   }
 }
