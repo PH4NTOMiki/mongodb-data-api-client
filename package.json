@@ -13,6 +13,7 @@
   "author": "PH4NTOMiki",
   "license": "ISC",
   "dependencies": {
+    "bson": "^4.6.0",
     "cross-fetch": "^3.1.4"
   }
 }

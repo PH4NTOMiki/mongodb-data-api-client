@@ -1,4 +1,5 @@
 const __fetch = require('cross-fetch');
+const { EJSON: ejson, ObjectId } = require('bson');
 
 class MongoDataAPIClient {
     /**
@@ -18,6 +19,7 @@ class MongoDataAPIClient {
         return new Database(dbName, this.url, this.apiKey, this.clusterName, this._fetch);
     }
 }
+MongoDataAPIClient.prototype.ObjectId = MongoDataAPIClient.prototype.ObjectID = ObjectId;
 
 class Database {
     constructor(dbName, url, apiKey, clusterName, _fetch) {
@@ -31,6 +33,7 @@ class Database {
         return new Collection(collectionName, this.dbName, this.url, this.apiKey, this.clusterName, this._fetch);
     }
 }
+Database.prototype.ObjectId = Database.prototype.ObjectID = ObjectId;
 
 class Collection {
     /**
@@ -47,12 +50,12 @@ class Collection {
     }
     async internalFetch(action, obj) {
         obj = obj || {};
-        if(obj.filter)obj.filter = this.fixId(obj.filter);
-        if(obj.document)obj.document = this.fixId(obj.document);
-        if(obj.documents)obj.documents = this.fixId(obj.documents);
-        if(obj.update)obj.update = this.fixId(obj.update);
-        if(obj.replacement)obj.replacement = this.fixId(obj.replacement);
-        if(obj.pipeline)obj.pipeline = this.fixId(obj.pipeline);
+        if(obj.filter)obj.filter = this.fixBson(obj.filter);
+        if(obj.document)obj.document = this.fixBson(obj.document);
+        if(obj.documents)obj.documents = this.fixBson(obj.documents);
+        if(obj.update)obj.update = this.fixBson(obj.update);
+        if(obj.replacement)obj.replacement = this.fixBson(obj.replacement);
+        if(obj.pipeline)obj.pipeline = this.fixBson(obj.pipeline);
         const resp = await this._fetch(this.url + action, {
             method: 'POST',
             headers: {
@@ -75,9 +78,10 @@ class Collection {
         }
 
     }
-    fixId(obj) {
-        if(typeof(obj._id)==='string' && (/^[a-f\d]{24}$/i).test(obj._id))obj._id = {$oid: obj._id};
-        if(Array.isArray(obj))obj = obj.map(e=>{if(typeof(e._id)==='string' && (/^[a-f\d]{24}$/i).test(e._id))e._id = {$oid: e._id};return e;});
+    fixBson(obj) {
+        if(typeof(obj._id)==='string' && (/^[a-f\d]{24}$/i).test(obj._id))obj._id = ObjectId(obj._id);
+        if(Array.isArray(obj))obj = obj.map(e=>{if(typeof(e._id)==='string' && (/^[a-f\d]{24}$/i).test(e._id))e._id = ObjectId(obj._id);return e;});
+        obj = ejson.serialize(obj, { relaxed: false, legacy: false });
         return obj;
     }
     async findMany(query, options) {
@@ -90,7 +94,7 @@ class Collection {
             limit: options.limit,
             skip: options.skip
         });
-        return a.documents;
+        return ejson.deserialize(a.documents);
     }
     find(query, options) {
         return this.findMany(query, options);
@@ -102,7 +106,7 @@ class Collection {
             filter: query,
             projection: options.projection
         });
-        return a.document;
+        return ejson.deserialize(a.document);
     }
     insertOne(doc) {
         return this.internalFetch('insertOne', {
@@ -164,8 +168,12 @@ class Collection {
         });
     }
 }
+Collection.prototype.ObjectId = Collection.prototype.ObjectID = ObjectId;
 
 function createMongoClient(appId, apiKey, clusterName, options) {
     return new MongoDataAPIClient(appId, apiKey, clusterName, options);
 }
+createMongoClient.ObjectId = createMongoClient.ObjectID = ObjectId;
 exports = module.exports = createMongoClient;
+exports.ObjectId = module.exports.ObjectId = ObjectId;
+exports.ObjectID = module.exports.ObjectID = ObjectId;
