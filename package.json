@@ -1,6 +1,6 @@
 {
   "name": "@ph4ntomiki/mongodb-data-api-client",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "MongoDB Data API Client",
   "main": "index.js",
   "scripts": {
