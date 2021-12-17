@@ -1,13 +1,20 @@
 {
   "name": "@ph4ntomiki/mongodb-data-api-client",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "MongoDB Data API Client",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "mongodb"
+    "mongodb",
+    "api",
+    "client",
+    "data",
+    "data-api",
+    "data-api-client",
+    "data-api-client-mongodb",
+    "MongoDB Atlas"
   ],
   "repository": "github:PH4NTOMiki/mongodb-data-api-client",
   "author": "PH4NTOMiki",
