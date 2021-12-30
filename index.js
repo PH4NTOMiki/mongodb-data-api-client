@@ -96,9 +96,9 @@ class Collection {
     }
     /**
      * 
-     * @param {object} query query
-     * @param {object} options options
-     * @returns {Promise<object[]>}
+     * @param {Object} query query
+     * @param {Object} options options
+     * @returns {Promise<Object[]>}
      */
     async findMany(query, options) {
         query = query || {};
@@ -114,18 +114,18 @@ class Collection {
     }
     /**
      * 
-     * @param {object} query query
-     * @param {object} options options
-     * @returns {Promise<object[]>}
+     * @param {Object} query query
+     * @param {Object} options options
+     * @returns {Promise<Object[]>}
      */
     find(query, options) {
         return this.findMany(query, options);
     }
     /**
      * 
-     * @param {object} query query
-     * @param {object} options options
-     * @returns {Promise<object>}
+     * @param {Object} query query
+     * @param {Object} options options
+     * @returns {Promise<Object>}
      */
     async findOne(query, options) {
         query = query || {};
@@ -138,8 +138,8 @@ class Collection {
     }
     /**
      * 
-     * @param {object} doc document
-     * @returns {Promise<object>}
+     * @param {Object} doc document
+     * @returns {Promise<Object>}
      */
     insertOne(doc) {
         return this.internalFetch('insertOne', {
@@ -149,7 +149,7 @@ class Collection {
     /**
      * 
      * @param {array} docs documents
-     * @returns {Promise<object>}
+     * @returns {Promise<Object>}
      */
     insertMany(docs) {
         return this.internalFetch('insertMany', {
@@ -158,10 +158,10 @@ class Collection {
     }
     /**
      * 
-     * @param {object} query query
-     * @param {object} update update
-     * @param {object} options options
-     * @returns {Promise<object>}
+     * @param {Object} query query
+     * @param {Object} update update
+     * @param {Object} options options
+     * @returns {Promise<Object>}
      */
     updateOne(query, update, options) {
         query = query || {};
@@ -174,10 +174,10 @@ class Collection {
     }
     /**
      * 
-     * @param {object} query query
-     * @param {object} update update
-     * @param {object} options options
-     * @returns {Promise<object>}
+     * @param {Object} query query
+     * @param {Object} update update
+     * @param {Object} options options
+     * @returns {Promise<Object>}
      */
     updateMany(query, update, options) {
         query = query || {};
@@ -190,18 +190,18 @@ class Collection {
     }
     /**
      * 
-     * @param {object} query query
-     * @param {object} update update
-     * @param {object} options options
-     * @returns {Promise<object>}
+     * @param {Object} query query
+     * @param {Object} update update
+     * @param {Object} options options
+     * @returns {Promise<Object>}
      */
     update(query, update, options) {
         return this.updateMany(query, update, options);
     }
     /**
      * 
-     * @param {object} query query
-     * @returns {Promise<object>}
+     * @param {Object} query query
+     * @returns {Promise<Object>}
      */
     deleteOne(query) {
         query = query || {};
@@ -211,8 +211,8 @@ class Collection {
     }
     /**
      * 
-     * @param {object} query query
-     * @returns {Promise<object>}
+     * @param {Object} query query
+     * @returns {Promise<Object>}
      */
     deleteMany(query) {
         query = query || {};
@@ -222,18 +222,18 @@ class Collection {
     }
     /**
      * 
-     * @param {object} query query
-     * @returns {Promise<object>}
+     * @param {Object} query query
+     * @returns {Promise<Object>}
      */
     delete(query) {
         return this.deleteMany(query);
     }
     /**
      * 
-     * @param {object} query query
-     * @param {object} doc document
-     * @param {object} options options
-     * @returns {Promise<object>}
+     * @param {Object} query query
+     * @param {Object} doc document
+     * @param {Object} options options
+     * @returns {Promise<Object>}
      */
     replaceOne(query, doc, options) {
         query = query || {};
@@ -245,8 +245,8 @@ class Collection {
     }
     /**
      * 
-     * @param {object} pipeline pipeline
-     * @returns {Promise<object>}
+     * @param {Object} pipeline pipeline
+     * @returns {Promise<Object>}
      */
     aggregate(pipeline) {
         return this.internalFetch('aggregate', {
@@ -261,7 +261,7 @@ Collection.prototype.ObjectId = Collection.prototype.ObjectID = ObjectId;
  * @param {string} appId App ID
  * @param {string} apiKey API Key
  * @param {string} [clusterName=Cluster0] cluster name
- * @param {object} options options
+ * @param {Object} options options
  * @returns {MongoDataAPIClient}
  */
 function createMongoClient(appId, apiKey, clusterName, options) {
